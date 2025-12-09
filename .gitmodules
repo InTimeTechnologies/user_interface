@@ -1,3 +1,6 @@
 [submodule "user_interface/vendor/glm"]
 	path = user_interface/vendor/glm
 	url = https://github.com/g-truc/glm
+[submodule "user_interface/vendor/stb/stb"]
+	path = user_interface/vendor/stb/stb
+	url = https://github.com/nothings/stb.git
