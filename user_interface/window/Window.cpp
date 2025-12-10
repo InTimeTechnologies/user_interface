@@ -29,7 +29,8 @@ namespace ui {
 			case WindowMessage::KEY_DOWN:
 				{
 					BYTE keyboardState[256]{};
-					GetKeyboardState(keyboardState);
+					bool successfullyGotKeyboardState = GetKeyboardState(keyboardState);
+					assert(successfullyGotKeyboardState && "Failed to get keyboard state.");
 
 					UINT scanCode = (longParameter >> 16) & 0xFF;
 					WORD asciiChar;
@@ -64,13 +65,38 @@ namespace ui {
 			{
 
 				PAINTSTRUCT paintStruct{};
-				HDC deviceContextHandle = BeginPaint(windowHandle, &paintStruct);
+				HDC deviceContext = BeginPaint(windowHandle, &paintStruct);
 
 				// Your drawing code goes here
 				{
 					// Place any drawing code here
 					HBRUSH backgroundBrush = CreateSolidBrush(RGB(38, 38, 38));
-					FillRect(deviceContextHandle, &paintStruct.rcPaint, backgroundBrush);
+					FillRect(deviceContext, &paintStruct.rcPaint, backgroundBrush);
+					{
+						HFONT hFont = CreateFontA(
+							32,                // Height in logical units (controls size)
+							0,                 // Width (0 = auto)
+							0, 0,              // Angle/orientation
+							FW_NORMAL,         // Weight (FW_BOLD for bold)
+							FALSE, FALSE, FALSE,
+							ANSI_CHARSET,
+							OUT_DEFAULT_PRECIS,
+							CLIP_DEFAULT_PRECIS,
+							DEFAULT_QUALITY,
+							DEFAULT_PITCH | FF_SWISS,
+							"Arial"
+						);
+
+						// Select font into the DC
+						HFONT oldFont = (HFONT)SelectObject(deviceContext, hFont);
+
+						TextOutA(deviceContext, 5, 5, "Hello, Win32!", 13);
+
+						// Restore old font (important!)
+						SelectObject(deviceContext, oldFont);
+						DeleteObject(hFont);
+
+					}
 					DeleteObject(backgroundBrush);
 				}
 				// Your drawing code ends here
@@ -80,16 +106,6 @@ namespace ui {
 			return 0;
 
 		}
-
-		/* Other messages can be handled here
-		 * WM_CREATE
-		 * WM_SIZE
-		 * WM_COMMAND
-		 * WM_KEYDOWN
-		 * WM_KEYUP
-		 * WM_LBUTTONDOWN
-		 * WM_LBUTTONUP
-		 */
 
 		return DefWindowProc(windowHandle, messageId, wordParameter, longParameter);
 	}
@@ -156,6 +172,9 @@ namespace ui {
 		assert(foundClass && "Window class not registered.");
 		return windowClassEx;
 	}
+	size_t Window::s_getWindowCount() {
+		return s_windowCount;
+	}
 
 	// Object | publie
 
@@ -189,42 +208,57 @@ namespace ui {
 
 	// Getters
 	std::wstring Window::getTitle() const {
+		assert(windowHandle != nullptr && "windowHandle == nullptr");
 		std::wstring title(256, L'\0');
 		int length = GetWindowTextW(windowHandle, title.data(), static_cast<int>(title.size()));
 		return title.substr(0, length);
 	}
 	WindowStyle Window::getStyle() const {
+		assert(windowHandle != nullptr && "windowHandle == nullptr");
 		LONG style = GetWindowLong(windowHandle, GWL_STYLE);
 		return static_cast<WindowStyle>(style);
 	}
 	WindowStyle Window::getExtendedStyle() const {
+		assert(windowHandle != nullptr && "windowHandle == nullptr");
 		LONG exStyle = GetWindowLong(windowHandle, GWL_EXSTYLE);
 		return static_cast<WindowStyle>(exStyle);
 	}
 	RectI Window::getRect() const {
+		assert(windowHandle != nullptr && "windowHandle == nullptr");
 		RECT rect{};
 		GetWindowRect(windowHandle, &rect);
 		return RectI(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
 	}
 	int Window::getx() const {
+		assert(windowHandle != nullptr && "windowHandle == nullptr");
 		RECT rect{};
 		GetWindowRect(windowHandle, &rect);
 		return rect.left;
 	}
 	int Window::gety() const {
+		assert(windowHandle != nullptr && "windowHandle == nullptr");
 		RECT rect{};
 		GetWindowRect(windowHandle, &rect);
 		return rect.top;
 	}
 	int Window::getWidth() const {
+		assert(windowHandle != nullptr && "windowHandle == nullptr");
 		RECT rect{};
 		GetWindowRect(windowHandle, &rect);
 		return rect.right - rect.left;
 	}
 	int Window::getHeight() const {
+		assert(windowHandle != nullptr && "windowHandle == nullptr");
 		RECT rect{};
 		GetWindowRect(windowHandle, &rect);
 		return rect.bottom - rect.top;
+	}
+	HDC Window::getDeviceContext() const {
+		assert(windowHandle != nullptr && "windowHandle == nullptr");
+		if (windowHandle != nullptr) {
+			return GetDC(windowHandle);
+		}
+		return nullptr;
 	}
 
 	
@@ -287,8 +321,8 @@ namespace ui {
 			WindowStyle currentWindowStyle = getStyle();
 			WindowStyle newWindowStyle = currentWindowStyle | style;
 			SetWindowLong(windowHandle, GWL_STYLE, static_cast<long>(newWindowStyle));
+			SetWindowPos(windowHandle, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 
-			//SetWindowPos(windowHandle, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 			return true;
 		}
 		return false;
@@ -299,8 +333,8 @@ namespace ui {
 			WindowStyle currentWindowStyle = getStyle();
 			WindowStyle newWindowStyle = currentWindowStyle & ~style;
 			SetWindowLong(windowHandle, GWL_STYLE, static_cast<long>(newWindowStyle));
+			SetWindowPos(windowHandle, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 
-			//SetWindowPos(windowHandle, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 			return true;
 		}
 		return false;
@@ -310,6 +344,13 @@ namespace ui {
 		if (windowHandle != nullptr) {
 			InvalidateRect(windowHandle, nullptr, TRUE);
 			UpdateWindow(windowHandle);
+		}
+	}
+	void Window::releaseDeviceContext(HDC deviceContext) {
+		assert(windowHandle != nullptr && "windowHandle == nullptr");
+		assert(deviceContext != nullptr && "deviceContext == nullptr");
+		if (windowHandle != nullptr && deviceContext != nullptr) {
+			ReleaseDC(windowHandle, deviceContext);
 		}
 	}
 }
