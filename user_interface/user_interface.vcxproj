@@ -136,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="graphics\font\Font.cpp" />
     <ClCompile Include="media\Image.cpp" />
     <ClCompile Include="vendor\glm\glm\detail\glm.cpp" />
     <ClCompile Include="vendor\stb\stb\stb_vorbis.c" />
@@ -153,6 +154,7 @@
     <ClInclude Include="core\Size.h" />
     <ClInclude Include="core\SizePolicy.h" />
     <ClInclude Include="core\WindowModality.h" />
+    <ClInclude Include="graphics\font\Font.h" />
     <ClInclude Include="media\Image.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\compute_common.hpp" />
