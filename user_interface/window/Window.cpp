@@ -291,7 +291,7 @@ namespace ui {
 	void Window::setRect(const RectI& rect) {
 		assert(windowHandle != nullptr && "windowHandle == nullptr");
 		if (windowHandle != nullptr) {
-			SetWindowPos(windowHandle, nullptr, rect.topLeft.x, rect.topLeft.y, rect.size.x, rect.size.y, SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(windowHandle, nullptr, rect.topLeft.x, rect.topLeft.y, rect.size.width, rect.size.height, SWP_NOZORDER | SWP_NOACTIVATE);
 		}
 	}
 	void Window::setPosition(int x, int y) {

@@ -1,8 +1,5 @@
 #pragma once
 
-// Dependencies | glm
-#include <glm/vec2.hpp>
-
 // Dependencies | ui
 #include "Size.h"
 #include "Point.h"
@@ -11,22 +8,23 @@
 namespace ui {
 	struct RectI {
 		// Properties
-		glm::ivec2 topLeft{}, size{};
+		PointI topLeft{};
+		SizeI size{};
 
 		// Constructors
 		RectI() = default;
 		RectI(int topLeftX, int topLeftY, int width, int height) : topLeft(topLeftX, topLeftY), size(width, height) {}
-		RectI(const glm::ivec2& topLeft, const glm::ivec2& size) : topLeft(topLeft), size(size) {}
-		RectI(const PointI& topLeft, const PointI& bottomRight) : topLeft(topLeft.point), size(bottomRight.point - topLeft.point) {}
+		RectI(const PointI& topLeft, const SizeI& size) : topLeft(topLeft), size(size) {}
+		RectI(const PointI& topLeft, const PointI& bottomRight) : topLeft(topLeft), size(bottomRight.x - topLeft.x, bottomRight.y - topLeft.y) {} // Convert PointI to SizeI somehow
 
 		// Getters
-		glm::ivec2 getCenter() const {
+		PointI getCenter() const {
 			return topLeft + size / 2;
 		}
-		glm::vec2 getCenterF() const {
-			return glm::vec2(topLeft) + glm::vec2(size) / 2.0f;
+		PointF getCenterF() const {
+			return PointF(topLeft) + SizeF(size) / 2.0f;
 		}
-		glm::ivec2 getSize() const {
+		SizeI getSize() const {
 			return size;
 		}
 
@@ -34,59 +32,59 @@ namespace ui {
 			return topLeft.y;
 		}
 		int getBottom() const {
-			return topLeft.y + size.y;
+			return topLeft.y + size.height;
 		}
 		int getRight() const {
-			return topLeft.x + size.x;
+			return topLeft.x + size.width;
 		}
 		int getLeft() const {
 			return topLeft.x;
 		}
 
-		glm::ivec2 getTopRight() const {
-			return glm::ivec2(topLeft.x + size.x, topLeft.y);
+		PointI getTopRight() const {
+			return PointI(topLeft.x + size.width, topLeft.y);
 		}
-		glm::ivec2 getBottomRight() const {
+		PointI getBottomRight() const {
 			return topLeft + size;
 		}
-		glm::ivec2 getTopLeft() const {
+		PointI getTopLeft() const {
 			return topLeft;
 		}
-		glm::ivec2 getBottomLeft() const {
-			return glm::ivec2(topLeft.x, topLeft.y + size.y);
+		PointI getBottomLeft() const {
+			return PointI(topLeft.x, topLeft.y + size.height);
 		}
 
-		int getHeight() const {
-			return size.y;
-		}
 		int getWidth() const {
-			return size.x;
+			return size.width;
+		}
+		int getHeight() const {
+			return size.height;
 		}
 
 		// Functions
 		bool isValid() const {
-			return size.x >= 0 && size.y >= 0;
+			return size.width >= 0 && size.height >= 0;
 		}
-		void translate(const glm::ivec2& translation) {
+		void translate(const PointI& translation) {
 			topLeft += translation;
 		}
 		bool isEmpty() const {
-			return size.x == 0 || size.y == 0;
+			return size.width == 0 || size.height == 0;
 		}
 
 		// Operators | arithmetic assignments
 		RectI& operator+=(const MarginsI& margins) {
 			topLeft.x -= margins.left;
 			topLeft.y -= margins.top;
-			size.x += margins.left + margins.right;
-			size.y += margins.top + margins.bottom;
+			size.width += margins.left + margins.right;
+			size.height += margins.top + margins.bottom;
 			return *this;
 		}
 		RectI& operator-=(const MarginsI& margins) {
 			topLeft.x += margins.left;
 			topLeft.y += margins.top;
-			size.x -= margins.left + margins.right;
-			size.y -= margins.top + margins.bottom;
+			size.width -= margins.left + margins.right;
+			size.height -= margins.top + margins.bottom;
 			return *this;
 		}
 
@@ -95,94 +93,95 @@ namespace ui {
 			return RectI(
 				topLeft.x - margins.left,
 				topLeft.y - margins.top,
-				size.x + margins.left + margins.right,
-				size.y + margins.top + margins.bottom
+				size.width + margins.left + margins.right,
+				size.height + margins.top + margins.bottom
 			);
 		}
 		RectI operator-(const MarginsI& margins) const {
 			return RectI(
 				topLeft.x + margins.left,
 				topLeft.y + margins.top,
-				size.x - (margins.left + margins.right),
-				size.y - (margins.top + margins.bottom)
+				size.width - (margins.left + margins.right),
+				size.height - (margins.top + margins.bottom)
 			);
 		}
 	};
 	struct RectF {
 		// Properties
-		glm::vec2 topLeft{}, size{};
+		PointF topLeft{};
+		SizeF size{};
 
 		// Constructors
 		RectF() = default;
 		RectF(float topLeftX, float topLeftY, float width, float height) : topLeft(topLeftX, topLeftY), size(width, height) {}
-		RectF(const glm::vec2& topLeft, const glm::vec2& size) : topLeft(topLeft), size(size) {}
-		RectF(const PointI& topLeft, const PointI& bottomRight) : topLeft(topLeft.point), size(bottomRight.point - topLeft.point) {}
+		RectF(const PointF& topLeft, const SizeF& size) : topLeft(topLeft), size(size) {}
+		RectF(const PointF& topLeft, const PointF& bottomRight) : topLeft(topLeft), size(bottomRight.x - topLeft.x, bottomRight.y - topLeft.y) {}
 
 		// Getters
-		glm::vec2 getCenter() const {
+		PointF getCenter() const {
 			return topLeft + size / 2.0f;
 		}
-		glm::vec2 getSize() const {
+		SizeF getSize() const {
 			return size;
 		}
 
 		float getTop() const {
 			return topLeft.y;
 		}
-		float getBottom() const {
-			return topLeft.y + size.y;
-		}
 		float getRight() const {
-			return topLeft.x + size.x;
+			return topLeft.x + size.width;
+		}
+		float getBottom() const {
+			return topLeft.y + size.height;
 		}
 		float getLeft() const {
 			return topLeft.x;
 		}
 
-		glm::vec2 getTopRight() const {
-			return glm::vec2(topLeft.x + size.x, topLeft.y);
+		PointF getTopRight() const {
+			return PointF(topLeft.x + size.width, topLeft.y);
 		}
-		glm::vec2 getBottomRight() const {
+		PointF getBottomRight() const {
 			return topLeft + size;
 		}
-		glm::vec2 getTopLeft() const {
+		PointF getTopLeft() const {
 			return topLeft;
 		}
-		glm::vec2 getBottomLeft() const {
-			return glm::vec2(topLeft.x, topLeft.y + size.y);
+		PointF getBottomLeft() const {
+			return PointF(topLeft.x, topLeft.y + size.height);
 		}
 
-		float getHeight() const {
-			return size.y;
-		}
 		float getWidth() const {
-			return size.x;
+			return size.width;
+		}
+		float getHeight() const {
+			return size.height;
 		}
 
 		// Functions
 		bool isValid() const {
-			return size.x >= 0.0f && size.y >= 0.0f;
+			return size.width >= 0.0f && size.height >= 0.0f;
 		}
-		void translate(const glm::vec2& translation) {
+		void translate(const PointF& translation) {
 			topLeft += translation;
 		}
 		bool isEmpty() const {
-			return size.x == 0.0f || size.y == 0.0f;
+			return size.width == 0.0f || size.height == 0.0f;
 		}
 
 		// Operators | arithmetic assignments
 		RectF& operator+=(const MarginsI& margins) {
 			topLeft.x -= margins.left;
 			topLeft.y -= margins.top;
-			size.x += margins.left + margins.right;
-			size.y += margins.top + margins.bottom;
+			size.width += margins.left + margins.right;
+			size.height += margins.top + margins.bottom;
 			return *this;
 		}
 		RectF& operator-=(const MarginsI& margins) {
 			topLeft.x += margins.left;
 			topLeft.y += margins.top;
-			size.x -= margins.left + margins.right;
-			size.y -= margins.top + margins.bottom;
+			size.width -= margins.left + margins.right;
+			size.height -= margins.top + margins.bottom;
 			return *this;
 		}
 
@@ -191,16 +190,16 @@ namespace ui {
 			return RectF(
 				topLeft.x - margins.left,
 				topLeft.y - margins.top,
-				size.x + margins.left + margins.right,
-				size.y + margins.top + margins.bottom
+				size.width + margins.left + margins.right,
+				size.height + margins.top + margins.bottom
 			);
 		}
 		RectF operator-(const MarginsI& margins) const {
 			return RectF(
 				topLeft.x + margins.left,
 				topLeft.y + margins.top,
-				size.x - (margins.left + margins.right),
-				size.y - (margins.top + margins.bottom)
+				size.width - (margins.left + margins.right),
+				size.height - (margins.top + margins.bottom)
 			);
 		}
 	};
