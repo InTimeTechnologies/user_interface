@@ -12,7 +12,7 @@
 namespace ui {
 	class Widget : public UIObject {
 		// Object
-		private:
+		protected:
 			// Properties
 			Widget* parent{ nullptr };
 			std::list<Widget*> children{};

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -138,6 +138,10 @@
   <ItemGroup>
     <ClCompile Include="graphics\font\Font.cpp" />
     <ClCompile Include="media\Image.cpp" />
+    <ClCompile Include="painter\LinePainter.cpp" />
+    <ClCompile Include="painter\TextPainter.cpp" />
+    <ClCompile Include="painter\Pen.cpp" />
+    <ClCompile Include="widget\Text.cpp" />
     <ClCompile Include="vendor\glm\glm\detail\glm.cpp" />
     <ClCompile Include="vendor\stb\stb\stb_vorbis.c" />
     <ClCompile Include="widget\UIObject.cpp" />
@@ -156,6 +160,9 @@
     <ClInclude Include="core\WindowModality.h" />
     <ClInclude Include="graphics\font\Font.h" />
     <ClInclude Include="media\Image.h" />
+    <ClInclude Include="painter\LinePainter.h" />
+    <ClInclude Include="painter\Pen.h" />
+    <ClInclude Include="painter\TextPainter.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\compute_common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\compute_vector_decl.hpp" />
@@ -467,6 +474,7 @@
     <ClInclude Include="vendor\stb\stb\stb_voxel_render.h" />
     <ClInclude Include="widget\GirdLayout.h" />
     <ClInclude Include="widget\Layout.h" />
+    <ClInclude Include="widget\Text.h" />
     <ClInclude Include="widget\UIObject.h" />
     <ClInclude Include="widget\VLayout.h" />
     <ClInclude Include="widget\Widget.h" />

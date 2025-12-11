@@ -14,6 +14,10 @@
 
 #include "../graphics/font/Font.h"
 
+#include "../widget/Text.h"
+
+#include "../painter/TextPainter.h"
+
 namespace ui {
 	class Window {
 		// Static

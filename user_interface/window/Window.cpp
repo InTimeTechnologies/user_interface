@@ -81,7 +81,30 @@ namespace ui {
 						HFONT oldFont = (HFONT)SelectObject(deviceContext, fontHandle);
 
 						// Render text using font
-						TextOutA(deviceContext, 5, 5, "Hello, Win32!", 13);
+						TextPainter textPainter{ 10, 10, "Text by TextPainter!"};
+						textPainter.render(deviceContext);
+
+						{
+
+							// Set up a pen
+							HPEN pen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
+							HPEN oldPen = (HPEN)SelectObject(deviceContext, pen);
+
+							// Move the drawing cursor to (10, 10)
+							MoveToEx(deviceContext, 10, 10, nullptr);
+
+							// Draw a line from (10, 10) to (200, 150)
+							LineTo(deviceContext, 200, 150);
+
+							// Restore original pen and clean up
+							SelectObject(deviceContext, oldPen);
+							DeleteObject(pen);
+						}
+
+						//Text text{ "Hello Win32!!!" };
+						//text.setGeometry(RectI{ 5, 5, 50, 50 });
+						//RectI geometry = text.getGeometry();
+						//TextOutA(deviceContext, geometry.topLeft.x, geometry.topLeft.y, text.getString().c_str(), text.getLength());
 
 						// Restore old font (important!)
 						SelectObject(deviceContext, oldFont);
