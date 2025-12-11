@@ -12,6 +12,8 @@
 
 #include "../core/Rect.h"
 
+#include "../graphics/font/Font.h"
+
 namespace ui {
 	class Window {
 		// Static

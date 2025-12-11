@@ -8,6 +8,7 @@
 
 namespace ui {
 	class Font {
+		// Enums
 		public:
 			// Enums
 			enum class Weight : int {
@@ -39,24 +40,6 @@ namespace ui {
 				#define PAN_CULTURE_LATIN           0
 				*/
 			};
-
-			//constexpr Weight operator|(Weight a, Weight b) {
-			//	return static_cast<Weight>(static_cast<int>(a) | static_cast<int>(b));
-			//}
-			//constexpr Weight operator&(Weight a, Weight b) {
-			//	return static_cast<Weight>(static_cast<int>(a) & static_cast<int>(b));
-			//}
-			//constexpr Weight& operator|=(Weight& a, Weight b) {
-			//	a = a | b;
-			//	return a;
-			//}
-			//constexpr Weight& operator&=(Weight& a, Weight b) {
-			//	a = a & b;
-			//	return a;
-			//}
-			//constexpr Weight operator~(Weight a) {
-			//	return static_cast<Weight>(~static_cast<int>(a));
-			//}
 
 			enum class Charset : int {
 				ANSI = ANSI_CHARSET,
@@ -146,9 +129,9 @@ namespace ui {
 				LH_ANGLES = CLIP_LH_ANGLES,
 				TT_ALWAYS = CLIP_TT_ALWAYS,
 
-				#if (_WIN32_WINNT >= _WIN32_WINNT_LONGHORN)
+	#if (_WIN32_WINNT >= _WIN32_WINNT_LONGHORN)
 				DFA_DISABLE = CLIP_DFA_DISABLE,
-				#endif
+	#endif
 
 				EMBEDDED = CLIP_EMBEDDED
 			};
@@ -188,42 +171,26 @@ namespace ui {
 			static std::string s_defaultFontName;
 
 		// Object
-		private:
-			// Properties
-			HFONT handle{ nullptr };
-
 		public:
 			// Properties
-			int height{ s_defaultWidth };
-			int width{ s_defaultHeight };
-			int angle{ s_defaultAngle };
-			int orientation{ s_defaultOrientation };
-			Weight fontWeight{ s_defaultFontWeight };
+			int height{ s_defaultHeight }; // Height in logical units (controls size)
+			int width{ s_defaultWidth }; // Width (0 = auto)
+			int angle{ s_defaultAngle }; // Angle
+			int orientation{ s_defaultOrientation }; // Orientation
+			Weight fontWeight{ s_defaultFontWeight }; // Weight (FW_BOLD for bold)
 			bool italic{ s_defaultItalic };
 			bool strikeOut{ s_defaultStrikeOut };
 			bool underline{ s_defaultUnderline };
 			Charset charset{ s_defaultCharset };
 			OutPrecision outPrecision{ s_defaultOutPrecision };
 			ClipPrecision clipPrecision{ s_defaultClipPrecision };
-			std::string fontName{ s_defaultFontName };
 			Quality quality{ s_defaultQuality };
 			Pitch fontPitch{ s_defaultPitch };
 			Family fontFamily{ s_defaultFamily };
-
-			// Constructor / Destructor
-			Font() = default;
-			Font(const Font& other) = delete;
-			Font(Font&& other) = delete;
-			Font& operator=(const Font& other) = delete;
-			Font& operator=(Font&& other) = delete;
-			~Font();
-
-			// Getters
-			HFONT getHandle();
+			std::string fontName{ s_defaultFontName };
 
 			// Functions
-			HFONT createHandle();
-			bool destroyHandle();
+			HFONT toHandle() const;
 	};
 
 	// Functions | Font::Weight
@@ -246,7 +213,8 @@ namespace ui {
 	}
 
 	// Functions | Font::Pitch & Font::Family
-	constexpr Font::Pitch operator|(Font::Pitch a, Font::Family b) {
-		return static_cast<Font::Pitch>(static_cast<int>(a) | static_cast<int>(b));
+	constexpr int operator|(Font::Pitch a, Font::Family b) {
+		return static_cast<int>(a) | static_cast<int>(b);
 	}
+	// To-Do: Carefully review this operator overload. You should create a enum class PitchAndFont for this.
 }

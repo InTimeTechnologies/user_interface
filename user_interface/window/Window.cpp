@@ -73,29 +73,19 @@ namespace ui {
 					HBRUSH backgroundBrush = CreateSolidBrush(RGB(38, 38, 38));
 					FillRect(deviceContext, &paintStruct.rcPaint, backgroundBrush);
 					{
-						HFONT hFont = CreateFontA(
-							32,                // Height in logical units (controls size)
-							0,                 // Width (0 = auto)
-							0, 0,              // Angle/orientation
-							FW_NORMAL,         // Weight (FW_BOLD for bold)
-							FALSE, FALSE, FALSE,
-							ANSI_CHARSET,
-							OUT_DEFAULT_PRECIS,
-							CLIP_DEFAULT_PRECIS,
-							DEFAULT_QUALITY,
-							DEFAULT_PITCH | FF_SWISS,
-							"Arial"
-						);
+						// Create font
+						Font font{};
+						HFONT fontHandle = font.toHandle();
 
 						// Select font into the DC
-						HFONT oldFont = (HFONT)SelectObject(deviceContext, hFont);
+						HFONT oldFont = (HFONT)SelectObject(deviceContext, fontHandle);
 
+						// Render text using font
 						TextOutA(deviceContext, 5, 5, "Hello, Win32!", 13);
 
 						// Restore old font (important!)
 						SelectObject(deviceContext, oldFont);
-						DeleteObject(hFont);
-
+						DeleteObject(fontHandle);
 					}
 					DeleteObject(backgroundBrush);
 				}
