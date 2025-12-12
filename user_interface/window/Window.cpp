@@ -85,10 +85,11 @@ namespace ui {
 						textPainter.render(deviceContext);
 
 						{
-
 							// Set up a pen
-							HPEN pen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
-							HPEN oldPen = (HPEN)SelectObject(deviceContext, pen);
+							Pen pen{};
+							HPEN penHandle = pen.createHandle();
+							//HPEN pen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
+							HPEN oldPen = (HPEN)SelectObject(deviceContext, penHandle);
 
 							// Move the drawing cursor to (10, 10)
 							MoveToEx(deviceContext, 10, 10, nullptr);
@@ -98,7 +99,7 @@ namespace ui {
 
 							// Restore original pen and clean up
 							SelectObject(deviceContext, oldPen);
-							DeleteObject(pen);
+							pen.destroyHandle();
 						}
 
 						//Text text{ "Hello Win32!!!" };

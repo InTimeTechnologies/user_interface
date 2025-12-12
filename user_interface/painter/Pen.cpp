@@ -16,9 +16,9 @@ namespace ui {
 	}
 
 	// Functions
-	HPEN Pen::createHandle(Style style) {
+	HPEN Pen::createHandle() {
 		destroyHandle();
-		handle = CreatePen(static_cast<int>(style), 2, RGB(255, 0, 0));
+		handle = CreatePen(static_cast<int>(style), thickness, RGB(rgb.r, rgb.g, rgb.b));
 		return handle;
 	}
 	void Pen::destroyHandle() {

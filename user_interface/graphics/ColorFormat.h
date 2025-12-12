@@ -270,11 +270,11 @@ namespace ui {
 	// Struct | Gray
 
 	// Operator | assignment conversions
-	Gray& Gray::operator=(const GrayAlpha& other) {
+	inline Gray& Gray::operator=(const GrayAlpha& other) {
 		r = other.r;
 		return *this;
 	}
-	Gray& Gray::operator=(const RGB& other) {
+	inline Gray& Gray::operator=(const RGB& other) {
 		// Using liminance formula to convert RGB to grayscale
 		r = static_cast<unsigned char>(
 			other.r * 0.299f +
@@ -283,7 +283,7 @@ namespace ui {
 			);
 		return *this;
 	}
-	Gray& Gray::operator=(const RGBA& other) {
+	inline Gray& Gray::operator=(const RGBA& other) {
 		// Using liminance formula to convert RGB to grayscale (ignore alpha)
 		r = static_cast<unsigned char>(
 			other.r * 0.299f +
@@ -296,12 +296,12 @@ namespace ui {
 	// Struct | GrayAlpha
 
 	// Operator | assignment conversion
-	GrayAlpha& GrayAlpha::operator=(const Gray& other) {
+	inline GrayAlpha& GrayAlpha::operator=(const Gray& other) {
 		r = other.r;
 		a = 255;
 		return *this;
 	}
-	GrayAlpha& GrayAlpha::operator=(const RGB& other) {
+	inline GrayAlpha& GrayAlpha::operator=(const RGB& other) {
 		r = static_cast<unsigned char>(
 			other.r * 0.299f +
 			other.g * 0.587f +
@@ -310,7 +310,7 @@ namespace ui {
 		a = 255;
 		return *this;
 	}
-	GrayAlpha& GrayAlpha::operator=(const RGBA& other) {
+	inline GrayAlpha& GrayAlpha::operator=(const RGBA& other) {
 		r = static_cast<unsigned char>(
 			other.r * 0.299f +
 			other.g * 0.587f +
@@ -323,19 +323,19 @@ namespace ui {
 	// Struct | RGB
 
 	// Operator | assignment conversion
-	RGB& RGB::operator=(const Gray& other) {
+	inline RGB& RGB::operator=(const Gray& other) {
 		r = other.r;
 		g = other.r;
 		b = other.r;
 		return *this;
 	}
-	RGB& RGB::operator=(const GrayAlpha& other) {
+	inline RGB& RGB::operator=(const GrayAlpha& other) {
 		r = other.r;
 		g = other.r;
 		b = other.r;
 		return *this;
 	}
-	RGB& RGB::operator=(const RGBA& other) {
+	inline RGB& RGB::operator=(const RGBA& other) {
 		r = other.r;
 		g = other.g;
 		b = other.b;
@@ -345,21 +345,21 @@ namespace ui {
 	// Struct | RGBA
 
 	// Operator | assignment conversion
-	RGBA& RGBA::operator=(const Gray& other) {
+	inline RGBA& RGBA::operator=(const Gray& other) {
 		r = other.r;
 		g = other.r;
 		b = other.r;
 		a = 255;
 		return *this;
 	}
-	RGBA& RGBA::operator=(const GrayAlpha& other) {
+	inline RGBA& RGBA::operator=(const GrayAlpha& other) {
 		r = other.r;
 		g = other.r;
 		b = other.r;
 		a = other.a;
 		return *this;
 	}
-	RGBA& RGBA::operator=(const RGB& other) {
+	inline RGBA& RGBA::operator=(const RGB& other) {
 		r = other.r;
 		g = other.g;
 		b = other.b;

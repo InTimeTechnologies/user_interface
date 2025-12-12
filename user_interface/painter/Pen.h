@@ -1,7 +1,10 @@
 #pragma once
 
-// Dependencies | ui
+// Dependencies | OS
 #include <Windows.h>
+
+// Dependencies | ui
+#include "../graphics/ColorFormat.h"
 
 namespace ui {
 	class Pen {
@@ -38,9 +41,13 @@ namespace ui {
 		private:
 			// Properties
 			HPEN handle{ nullptr };
-			int thickness{ 2 };
 
 		public:
+			// Properties
+			Style style{ Style::SOLID };
+			int thickness{ 2 };
+			RGB rgb{};
+
 			// Constructor / Destructor
 			Pen() = default;
 			Pen(const Pen& other) = delete;
@@ -55,7 +62,7 @@ namespace ui {
 			HPEN getHandle() const;
 
 			// Functions
-			HPEN createHandle(Style style);
+			HPEN createHandle();
 			void destroyHandle();
 	};
 }

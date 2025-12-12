@@ -6,16 +6,23 @@
 // Dependencies | std
 #include <string>
 
-// Dependencies | ui
+// Dependencies | ui | Window
 #include "WindowMessage.h"
 #include "WindowStyle.h"
 
+
+// Dependencies | ui | core
 #include "../core/Rect.h"
 
+// Dependencies | ui | graphics
+#include "../graphics/ColorFormat.h"
 #include "../graphics/font/Font.h"
 
+// Dependencies | ui | widget
 #include "../widget/Text.h"
 
+// Dependencies | ui | painter
+#include "../painter/Pen.h"
 #include "../painter/TextPainter.h"
 
 namespace ui {
