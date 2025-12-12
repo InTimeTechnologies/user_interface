@@ -24,6 +24,7 @@
 // Dependencies | ui | painter
 #include "../painter/Pen.h"
 #include "../painter/TextPainter.h"
+#include "../painter/LinePainter.h"
 
 namespace ui {
 	class Window {

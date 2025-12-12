@@ -91,11 +91,15 @@ namespace ui {
 							//HPEN pen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
 							HPEN oldPen = (HPEN)SelectObject(deviceContext, penHandle);
 
-							// Move the drawing cursor to (10, 10)
-							MoveToEx(deviceContext, 10, 10, nullptr);
+							LinePainter linePainter{};
+							linePainter.line.p2 = { 100, 100 };
+							linePainter.render(deviceContext);
 
-							// Draw a line from (10, 10) to (200, 150)
-							LineTo(deviceContext, 200, 150);
+							//// Move the drawing cursor to (10, 10)
+							//MoveToEx(deviceContext, 10, 10, nullptr);
+
+							//// Draw a line from (10, 10) to (200, 150)
+							//LineTo(deviceContext, 200, 150);
 
 							// Restore original pen and clean up
 							SelectObject(deviceContext, oldPen);
