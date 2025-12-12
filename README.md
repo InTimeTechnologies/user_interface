@@ -32,14 +32,13 @@ user_interface is under early and active development. It is not ready for releas
   - Core API is designed so Win32-specific details are contained in the library
   - Engine code can remain platform-agnostic
 
-## Installation
-
-1. Clone the repository as a submodule in your project:
+## Building
 
 ```bash
-git submodule add https://github.com/yourusername/user_interface.git vendor/user_interface
+git clone --recurse-submodules https://github.com/InTimeTechnologies/user_interface.git
 ```
-Contributing
+
+## Contributing
 
 Follow RAII and type-safe patterns for all Win32 objects.
 

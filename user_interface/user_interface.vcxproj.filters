@@ -1046,6 +1046,9 @@
     <ClInclude Include="painter\Pen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\ColorFormat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vendor\glm\glm\detail\func_common.inl">

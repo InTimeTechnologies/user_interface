@@ -158,6 +158,7 @@
     <ClInclude Include="core\Size.h" />
     <ClInclude Include="core\SizePolicy.h" />
     <ClInclude Include="core\WindowModality.h" />
+    <ClInclude Include="graphics\ColorFormat.h" />
     <ClInclude Include="graphics\font\Font.h" />
     <ClInclude Include="media\Image.h" />
     <ClInclude Include="painter\LinePainter.h" />
