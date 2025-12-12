@@ -34,9 +34,13 @@ user_interface is under early and active development. It is not ready for releas
 
 ## Building
 
+Download Visual Studio 2026 and download C/C++ desktop development package if you have not done so already. Older versions of Visual Studio should work just fine.
+
 ```bash
 git clone --recurse-submodules https://github.com/InTimeTechnologies/user_interface.git
 ```
+
+Open up user_interface.sln in the root directory and program away. If you are on an older version of Visual Studio, it might complain when you first open the solution file.
 
 ## Contributing
 
