@@ -136,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="graphics\ColorFormat.cpp" />
     <ClCompile Include="graphics\font\Font.cpp" />
     <ClCompile Include="media\Image.cpp" />
     <ClCompile Include="painter\LinePainter.cpp" />
