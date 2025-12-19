@@ -5,7 +5,7 @@ It wraps core Win32 functionality (windows, fonts, device contexts) and provides
 
 ## Disclaimer
 
-user_interface is under early and active development. It is not ready for release nor deployment.
+user_interface is under early and active development. It is more of a Win32 API learning project with components of it that will be used in UI related code for in_time_engine. It is not ready for release nor deployment.
 
 ## Features
 
